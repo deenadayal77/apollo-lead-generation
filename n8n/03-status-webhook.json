@@ -1,0 +1,248 @@
+{
+  "name": "HelixGTM Status Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1200, 400],
+      "id": "sw-001-webhook",
+      "name": "Status Webhook",
+      "webhookId": "helixgtm-status-webhook"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const query = $input.item.json.query || {};\nconst jobId = (query.jobId || '').trim();\n\nif (!jobId) {\n  return {\n    json: {\n      _error: true,\n      _statusCode: 400,\n      error: 'jobId query parameter is required'\n    }\n  };\n}\n\nreturn {\n  json: { jobId }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-1000, 400],
+      "id": "sw-002-parse-query",
+      "name": "Parse Query Params"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "check-error",
+              "leftValue": "={{ $json._error }}",
+              "rightValue": "true",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [-800, 400],
+      "id": "sw-003-check-valid",
+      "name": "Is Valid Request?"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: $json.error || 'Bad request' }) }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [-600, 240],
+      "id": "sw-004-respond-400",
+      "name": "Respond 400"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "documentId": {
+          "__rl": true,
+          "value": "1Lf3GxQAAn51LOK9J3uF6Yo6938iZXbQLcE50Y6RaQxg",
+          "mode": "list",
+          "cachedResultName": "company_list_export",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lf3GxQAAn51LOK9J3uF6Yo6938iZXbQLcE50Y6RaQxg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 888888888,
+          "mode": "list",
+          "cachedResultName": "enrichment_jobs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lf3GxQAAn51LOK9J3uF6Yo6938iZXbQLcE50Y6RaQxg/edit#gid=888888888"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-600, 560],
+      "id": "sw-005-read-jobs",
+      "name": "Read enrichment_jobs",
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "7k4L0u589gzaur4p", "name": "Google Sheets account" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const jobId = $('Parse Query Params').first().json.jobId || '';\nconst items = $input.all();\n\nconst jobRow = items.find(item => item.json.jobId === jobId);\n\nif (!jobRow) {\n  return [{ json: {\n    _not_found: true,\n    _jobId: jobId\n  }}];\n}\n\nreturn [{ json: {\n  _found: true,\n  _jobId: jobId,\n  jobStatus:      jobRow.json.status         || 'pending',\n  totalCompanies: Number(jobRow.json.totalCompanies || 0),\n  processedCount: Number(jobRow.json.processedCount || 0),\n  createdAt:      jobRow.json.createdAt      || '',\n  updatedAt:      jobRow.json.updatedAt      || ''\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-400, 560],
+      "id": "sw-006-find-job",
+      "name": "Find Job Record"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "check-found",
+              "leftValue": "={{ $json._not_found }}",
+              "rightValue": "true",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [-200, 560],
+      "id": "sw-007-job-exists",
+      "name": "Job Exists?"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: 'Job not found', jobId: $json._jobId }) }}",
+        "options": {
+          "responseCode": 404
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [0, 400],
+      "id": "sw-008-respond-404",
+      "name": "Respond 404"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "documentId": {
+          "__rl": true,
+          "value": "1Lf3GxQAAn51LOK9J3uF6Yo6938iZXbQLcE50Y6RaQxg",
+          "mode": "list",
+          "cachedResultName": "company_list_export",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lf3GxQAAn51LOK9J3uF6Yo6938iZXbQLcE50Y6RaQxg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 777777777,
+          "mode": "list",
+          "cachedResultName": "enrichment_results",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lf3GxQAAn51LOK9J3uF6Yo6938iZXbQLcE50Y6RaQxg/edit#gid=777777777"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [0, 720],
+      "id": "sw-009-read-results",
+      "name": "Read enrichment_results",
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "7k4L0u589gzaur4p", "name": "Google Sheets account" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const jobMeta = $('Find Job Record').first().json;\nconst jobId    = jobMeta._jobId         || '';\nconst allRows  = $input.all();\n\nconst companyRows = allRows.filter(item => item.json.jobId === jobId);\n\nconst companies = companyRows.map(item => {\n  const r = item.json;\n  return {\n    company_linkedin_url: r.company_linkedin_url || '',\n    company_name:         r.company_name         || '',\n    status:               r.status               || 'pending',\n    person_name:          r.person_name          || undefined,\n    title:                r.title                || undefined,\n    seniority:            r.seniority            || undefined,\n    email:                r.email                || undefined,\n    phone:                r.phone                || undefined,\n    location:             r.location             || undefined,\n    industry:             r.industry             || undefined,\n    company_size:         r.company_size         || undefined,\n    reason:               r.reason               || undefined,\n    enriched_at:          r.enriched_at          || undefined\n  };\n});\n\nconst jobStatus    = jobMeta.jobStatus      || 'pending';\nconst totalCompanies = jobMeta.totalCompanies || companies.length;\nconst processedCount = jobMeta.processedCount || companies.length;\n\nconst responseBody = {\n  jobId,\n  status:           jobStatus,\n  totalCompanies:   Number(totalCompanies),\n  processedCount:   jobStatus === 'complete' ? Number(totalCompanies) : Number(processedCount),\n  companies,\n  createdAt:        jobMeta.createdAt  || '',\n  updatedAt:        jobMeta.updatedAt  || new Date().toISOString()\n};\n\nreturn [{ json: responseBody }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 720],
+      "id": "sw-010-build-response",
+      "name": "Build Status Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [400, 720],
+      "id": "sw-011-respond-200",
+      "name": "Respond 200"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Status Webhook": {
+      "main": [[{ "node": "Parse Query Params", "type": "main", "index": 0 }]]
+    },
+    "Parse Query Params": {
+      "main": [[{ "node": "Is Valid Request?", "type": "main", "index": 0 }]]
+    },
+    "Is Valid Request?": {
+      "main": [
+        [{ "node": "Respond 400", "type": "main", "index": 0 }],
+        [{ "node": "Read enrichment_jobs", "type": "main", "index": 0 }]
+      ]
+    },
+    "Read enrichment_jobs": {
+      "main": [[{ "node": "Find Job Record", "type": "main", "index": 0 }]]
+    },
+    "Find Job Record": {
+      "main": [[{ "node": "Job Exists?", "type": "main", "index": 0 }]]
+    },
+    "Job Exists?": {
+      "main": [
+        [{ "node": "Respond 404", "type": "main", "index": 0 }],
+        [{ "node": "Read enrichment_results", "type": "main", "index": 0 }]
+      ]
+    },
+    "Read enrichment_results": {
+      "main": [[{ "node": "Build Status Response", "type": "main", "index": 0 }]]
+    },
+    "Build Status Response": {
+      "main": [[{ "node": "Respond 200", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "status-webhook-v1-2026-06-23",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2ddcf46e07ce4b5c83b48c893f6ae8d62c38911f76f1529f0530071ca5c0d6"
+  },
+  "id": "HelixGTMStatusWebhook01",
+  "tags": []
+}
