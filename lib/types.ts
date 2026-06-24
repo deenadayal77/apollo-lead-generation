@@ -1,11 +1,23 @@
-export type CompanyStatus =
-  | 'pending'
-  | 'enriching'
-  | 'found'
-  | 'not_found'
-  | 'no_email'
-  | 'error';
+// ── New types (simple single-URL lookup) ──────────────────
+export interface Person {
+  name: string;
+  title: string;
+  seniority: string;
+  email: string;
+  linkedin_url: string;
+  location: string;
+  phone: string;
+}
 
+export interface LookupResult {
+  success: boolean;
+  total: number;
+  people: Person[];
+  company_url: string;
+}
+
+// ── Legacy types (kept so unused components still compile) ─
+export type CompanyStatus = 'pending' | 'enriching' | 'found' | 'not_found' | 'no_email' | 'error';
 export type JobStatus = 'pending' | 'running' | 'complete' | 'failed';
 
 export interface CompanyResult {
@@ -33,18 +45,4 @@ export interface Job {
   companies: CompanyResult[];
   createdAt: string;
   updatedAt: string;
-}
-
-export interface SubmitPayload {
-  companies: {
-    company_linkedin_url: string;
-    company_name?: string;
-    domain?: string;
-  }[];
-}
-
-export interface SubmitResponse {
-  jobId: string;
-  status: 'accepted';
-  message: string;
 }
