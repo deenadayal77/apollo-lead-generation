@@ -1,4 +1,4 @@
-# HelixGTM — Apollo Lead Enrichment
+#  Apollo Lead Enrichment
 
 > Paste a LinkedIn company URL. Get the top 5 senior decision-makers with verified emails in under 30 seconds.
 
