@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
+import type { DocumentProps } from '@react-pdf/renderer';
 import React from 'react';
 import { LeadReportDocument } from '@/components/pdf/LeadReport';
 import type { LookupResult } from '@/lib/types';
@@ -20,7 +21,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const element = React.createElement(LeadReportDocument, { result: body });
+    const element = React.createElement(
+      LeadReportDocument,
+      { result: body }
+    ) as React.ReactElement<DocumentProps>;
     const buffer = await renderToBuffer(element);
 
     const companySlug = (body.company_url || 'company')
