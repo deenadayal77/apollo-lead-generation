@@ -2,7 +2,7 @@
 
 > Paste a LinkedIn company URL. Get the top 5 senior decision-makers with verified emails in under 30 seconds.
 
-Live: [helixgtm.vercel.app](https://helixgtm.vercel.app) &nbsp;|&nbsp; Stack: Next.js 14 · n8n · Apollo.io
+Live: [Apollo Lead Enrichment.vercel.app](https://apollo-lead-generation.vercel.app/) &nbsp;|&nbsp; Stack: Next.js 14 · n8n · Apollo.io
 
 ---
 
@@ -178,4 +178,4 @@ helixgtm-enrichment/
 
 ---
 
-*Built by [Deena](https://github.com/deenadayal77) — HelixGTM, 2026*
+*Built by [Deena](https://github.com/deenadayal77) —  2026*
