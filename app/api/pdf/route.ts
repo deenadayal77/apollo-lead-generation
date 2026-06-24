@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       .replace(/www\.linkedin\.com\/company\//, '')
       .replace(/\//g, '')
       .slice(0, 30);
-    const filename = `helixgtm-${companySlug}-leads.pdf`;
+    const filename = `helixhd-${companySlug}-leads.pdf`;
 
     return new NextResponse(new Uint8Array(buffer), {
       status: 200,
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (err) {
-    console.error('[HelixGTM] PDF error:', err);
+    console.error('[HelixHD] PDF error:', err);
     return NextResponse.json({ error: 'Failed to generate PDF' }, { status: 500 });
   }
 }

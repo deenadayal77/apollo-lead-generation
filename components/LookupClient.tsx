@@ -159,7 +159,7 @@ export default function LookupClient() {
         .replace(/\//g, '')
         .slice(0, 30);
       link.href = blobUrl;
-      link.download = `helixgtm-${slug}-leads.pdf`;
+      link.download = `helixhd-${slug}-leads.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

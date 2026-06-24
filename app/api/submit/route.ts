@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     const res = await fetch(webhookUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'User-Agent': 'HelixGTM/1.0' },
+      headers: { 'Content-Type': 'application/json', 'User-Agent': 'HelixHD/1.0' },
       body: JSON.stringify({ company_url }),
       signal: controller.signal,
     });

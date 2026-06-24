@@ -86,7 +86,7 @@ export async function GET(_req: NextRequest, { params }: RouteParams) {
       {
         cache: 'no-store',
         headers: {
-          'User-Agent': 'HelixGTM/1.0',
+          'User-Agent': 'HelixHD/1.0',
           Accept: 'application/json',
         },
         signal: controller.signal,
@@ -100,7 +100,7 @@ export async function GET(_req: NextRequest, { params }: RouteParams) {
         return NextResponse.json({ error: 'Job not found' }, { status: 404 });
       }
       const errorText = await res.text().catch(() => 'Unknown error');
-      console.error('[HelixGTM] Status webhook error:', res.status, errorText);
+      console.error('[HelixHD] Status webhook error:', res.status, errorText);
       return NextResponse.json(
         { error: `Status service returned ${res.status}` },
         { status: 502 }
@@ -115,7 +115,7 @@ export async function GET(_req: NextRequest, { params }: RouteParams) {
     });
   } catch (err) {
     const isTimeout = err instanceof Error && err.name === 'AbortError';
-    console.error('[HelixGTM] Status fetch error:', err);
+    console.error('[HelixHD] Status fetch error:', err);
     return NextResponse.json(
       {
         error: isTimeout

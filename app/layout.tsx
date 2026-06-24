@@ -8,12 +8,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'HelixGTM — Lead Enrichment Engine',
+  title: 'HelixHD — Lead Enrichment Engine',
   description:
     'Enrich B2B leads at scale. Paste LinkedIn company URLs, get verified contacts with emails, titles, and phone numbers — powered by Apollo.io.',
   keywords: ['lead enrichment', 'B2B leads', 'LinkedIn', 'Apollo.io', 'sales intelligence'],
   openGraph: {
-    title: 'HelixGTM — Lead Enrichment Engine',
+    title: 'HelixHD — Lead Enrichment Engine',
     description: 'Enrich B2B leads at scale using Apollo.io.',
     type: 'website',
   },

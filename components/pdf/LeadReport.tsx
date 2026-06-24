@@ -256,10 +256,10 @@ export function LeadReportDocument({ result }: LeadReportDocumentProps) {
 
   return (
     <Document
-      title="HelixGTM People Lookup Report"
-      author="HelixGTM"
+      title="HelixHD People Lookup Report"
+      author="HelixHD"
       subject="Lead Enrichment Report"
-      creator="HelixGTM Lead Enrichment Engine"
+      creator="HelixHD Lead Enrichment Engine"
     >
       <Page size="A4" orientation="landscape" style={styles.page}>
         {/* Header */}
@@ -291,7 +291,7 @@ export function LeadReportDocument({ result }: LeadReportDocumentProps) {
         {/* Footer */}
         <View style={styles.footer} fixed>
           <Text style={styles.footerText}>
-            HelixGTM — Lead Enrichment Engine · Powered by Apollo.io
+            HelixHD — Lead Enrichment Engine · Powered by Apollo.io
           </Text>
           <Text
             style={styles.pageNumber}

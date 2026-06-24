@@ -1,8 +1,8 @@
-#  Apollo Lead Enrichment
+# HelixHD — Apollo Lead Enrichment
 
 > Paste a LinkedIn company URL. Get the top 5 senior decision-makers with verified emails in under 30 seconds.
 
-Live: [Apollo Lead Enrichment.vercel.app](https://apollo-lead-generation.vercel.app/) &nbsp;|&nbsp; Stack: Next.js 14 · n8n · Apollo.io
+Live: [apollo-lead-generation.vercel.app](https://apollo-lead-generation.vercel.app/) &nbsp;|&nbsp; Stack: Next.js 14 · n8n · Apollo.io
 
 ---
 
@@ -114,7 +114,7 @@ Vercel auto-deploys on every push to `main`.
 
 ```bash
 git clone https://github.com/deenadayal77/apollo-lead-generation.git
-cd apollo-lead-generation/helixgtm-enrichment
+cd apollo-lead-generation/helixhd-enrichment
 npm install
 
 # Copy env file
@@ -132,7 +132,7 @@ Without `N8N_WEBHOOK_URL` set, the app runs in dev-mock mode and returns 3 fake 
 ## Project structure
 
 ```
-helixgtm-enrichment/
+helixhd-enrichment/
 ├── app/
 │   ├── page.tsx                    # Home page (server component)
 │   ├── api/
@@ -178,4 +178,4 @@ helixgtm-enrichment/
 
 ---
 
-*Built by [Deena](https://github.com/deenadayal77) —  2026*
+*Built by [Deena](https://github.com/deenadayal77) — HelixHD, 2026*

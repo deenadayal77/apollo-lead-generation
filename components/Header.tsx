@@ -26,7 +26,7 @@ export default function Header() {
             <div>
               <span className="text-lg font-bold tracking-tight text-slate-100">
                 Helix
-                <span className="text-blue-400">GTM</span>
+                <span className="text-blue-400">HD</span>
               </span>
             </div>
           </div>

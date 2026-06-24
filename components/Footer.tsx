@@ -4,10 +4,10 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-slate-500 text-sm">
           <span className="font-semibold text-slate-400">
-            Helix<span className="text-blue-400">GTM</span>
+            Helix<span className="text-blue-400">HD</span>
           </span>
           <span>·</span>
-          <span>© 2026 HelixGTM. All rights reserved.</span>
+          <span>© 2026 HelixHD. All rights reserved.</span>
         </div>
 
         <div className="flex items-center gap-4 text-sm text-slate-500">

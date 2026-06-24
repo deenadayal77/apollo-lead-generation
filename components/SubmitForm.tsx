@@ -88,7 +88,7 @@ export default function SubmitForm() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'helixgtm-template.csv';
+    link.download = 'helixhd-template.csv';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
