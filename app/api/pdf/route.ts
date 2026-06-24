@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       .slice(0, 30);
     const filename = `helixgtm-${companySlug}-leads.pdf`;
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
